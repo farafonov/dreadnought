@@ -11,6 +11,7 @@
     <modules>
         <module>dreadnought-server</module>
         <module>dreadnought-storage</module>
+        <module>dreadnought-encryption</module>
     </modules>
 
 
