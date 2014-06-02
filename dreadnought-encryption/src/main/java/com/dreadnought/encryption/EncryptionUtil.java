@@ -1,14 +1,25 @@
 package com.dreadnought.encryption;
 
+import org.jasypt.encryption.pbe.PooledPBEByteEncryptor;
+
 /**
  * Created by boss on 6/2/14.
  */
 public class EncryptionUtil {
-    public static byte[] encrypt(byte[] blah) {
-        return new byte[0];
+    private static final String ALGORITHM = "PBEWithMD5AndTripleDES";
+    public static byte[] encrypt(String pass, byte[] blah) {
+        PooledPBEByteEncryptor encryptor = new PooledPBEByteEncryptor();
+        encryptor.setPoolSize(4);          // This would be a good value for a 4-core system
+        encryptor.setPassword(pass);
+        encryptor.setAlgorithm(ALGORITHM);
+        return encryptor.encrypt(blah);
     }
 
-    public static byte[] decrypt(byte[] encrypted) {
-        return new byte[0];
+    public static byte[] decrypt(String pass, byte[] encrypted) {
+        PooledPBEByteEncryptor encryptor = new PooledPBEByteEncryptor();
+        encryptor.setPoolSize(4);          // This would be a good value for a 4-core system
+        encryptor.setPassword(pass);
+        encryptor.setAlgorithm(ALGORITHM);
+        return encryptor.decrypt(encrypted);
     }
 }
