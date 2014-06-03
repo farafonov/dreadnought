@@ -1,6 +1,9 @@
 package com.dreadnought.encryption;
 
 import org.jasypt.encryption.pbe.PooledPBEByteEncryptor;
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by boss on 6/2/14.
@@ -21,5 +24,17 @@ public class EncryptionUtil {
         encryptor.setPassword(pass);
         encryptor.setAlgorithm(ALGORITHM);
         return encryptor.decrypt(encrypted);
+    }
+
+    public static byte[] hash(String password) {
+        ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+        passwordEncryptor.setAlgorithm("SHA-1");
+        passwordEncryptor.setPlainDigest(true);
+        String encryptedPassword = passwordEncryptor.encryptPassword(password);
+        try {
+            return encryptedPassword.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 }
