@@ -7,12 +7,12 @@ import org.jasypt.encryption.pbe.PooledPBEByteEncryptor;
  */
 public class EncryptionUtil {
     private static final String ALGORITHM = "PBEWithMD5AndTripleDES";
-    public static byte[] encrypt(String pass, byte[] blah) {
+    public static byte[] encrypt(String pass, byte[] unEncrypted ) {
         PooledPBEByteEncryptor encryptor = new PooledPBEByteEncryptor();
         encryptor.setPoolSize(4);          // This would be a good value for a 4-core system
         encryptor.setPassword(pass);
         encryptor.setAlgorithm(ALGORITHM);
-        return encryptor.encrypt(blah);
+        return encryptor.encrypt(unEncrypted);
     }
 
     public static byte[] decrypt(String pass, byte[] encrypted) {
