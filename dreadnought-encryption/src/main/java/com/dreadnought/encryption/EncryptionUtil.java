@@ -1,5 +1,6 @@
 package com.dreadnought.encryption;
 
+import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.encryption.pbe.PooledPBEByteEncryptor;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
@@ -27,14 +28,25 @@ public class EncryptionUtil {
     }
 
     public static byte[] hash(String password) {
-        ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
-        passwordEncryptor.setAlgorithm("SHA-1");
-        passwordEncryptor.setPlainDigest(true);
-        String encryptedPassword = passwordEncryptor.encryptPassword(password);
+        StandardStringDigester digester = new StandardStringDigester();
+        digester.setAlgorithm("SHA-256");   // optionally set the algorithm
+        digester.setIterations(50000);  // increase security by performing 50000 hashing iterations
+        String encryptedPassword = digester.digest(password);
         try {
             return encryptedPassword.getBytes("UTF-8");
         } catch (UnsupportedEncodingException exception) {
             throw new RuntimeException(exception);
+        }
+    }
+
+    public static void verify(String password, String password2) throws InvalidPasswordException {
+        StandardStringDigester digester = new StandardStringDigester();
+        digester.setAlgorithm("SHA-256");   // optionally set the algorithm
+        digester.setIterations(50000);  // increase security by performing 50000 hashing iterations
+        String encryptedPassword = digester.digest(password);
+
+        if (!digester.matches(password2, encryptedPassword)){
+            throw new InvalidPasswordException();
         }
     }
 }
