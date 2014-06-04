@@ -1,6 +1,8 @@
 package com.dreadnought.encryption;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jasypt.digest.StandardStringDigester;
+import org.jasypt.digest.StringDigester;
 import org.jasypt.encryption.pbe.PooledPBEByteEncryptor;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
@@ -28,10 +30,7 @@ public class EncryptionUtil {
     }
 
     public static byte[] hash(String password) {
-        StandardStringDigester digester = new StandardStringDigester();
-        digester.setAlgorithm("SHA-256");   // optionally set the algorithm
-        digester.setIterations(50000);  // increase security by performing 50000 hashing iterations
-        String encryptedPassword = digester.digest(password);
+        String encryptedPassword = getStringDigester().digest(password);
         try {
             return encryptedPassword.getBytes("UTF-8");
         } catch (UnsupportedEncodingException exception) {
@@ -40,13 +39,19 @@ public class EncryptionUtil {
     }
 
     public static void verify(String password, String password2) throws InvalidPasswordException {
-        StandardStringDigester digester = new StandardStringDigester();
-        digester.setAlgorithm("SHA-256");   // optionally set the algorithm
-        digester.setIterations(50000);  // increase security by performing 50000 hashing iterations
-        String encryptedPassword = digester.digest(password);
+        String encryptedPassword = getStringDigester().digest(password);
 
-        if (!digester.matches(password2, encryptedPassword)){
+        if (!getStringDigester().matches(password2, encryptedPassword)){
             throw new InvalidPasswordException();
         }
     }
+
+    public static StringDigester getStringDigester(){
+        StandardStringDigester digester = new StandardStringDigester();
+        digester.setProvider(new BouncyCastleProvider());
+        digester.setAlgorithm("SHA-256");   // optionally set the algorithm
+        digester.setIterations(50000);  // increase security by performing 50000 hashing iterations
+        return digester;
+    }
+
 }
