@@ -15,18 +15,12 @@ public class SimpleEncryptDecryptTest {
         Assert.assertEquals("blah", new String(decrypted, "UTF-8"));
     }
 
-    @Test (expectedExceptions = InvalidPasswordException.class)
-    public void testHashEncryption_differentpasswords() throws Exception {
-        String password= "rex";
-        String password2 = "dmitri";
-        EncryptionUtil.verify(password, password2);
-    }
     @Test
-    public void testHashEncryption_samepasswords() throws Exception {
+    public void testHashEncryption() throws Exception {
         String password= "rex";
-        String password2 = "rex";
-        EncryptionUtil.verify(password, password2);
+        byte[] hash = EncryptionUtil.hash(password);
+        String password2 = "dmitri";
+        byte[] hash2 = EncryptionUtil.hash(password2);
+        Assert.assertNotEquals(hash,hash2,"Expected Different Hash but got same");
     }
-
-
 }
