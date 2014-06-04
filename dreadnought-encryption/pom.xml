@@ -21,11 +21,6 @@
             <artifactId>bcprov-jdk16</artifactId>
             <version>1.46</version>
         </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.8.8</version>
-        </dependency>
     </dependencies>
 
 </project>
