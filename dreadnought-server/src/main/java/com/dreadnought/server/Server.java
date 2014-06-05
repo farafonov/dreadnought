@@ -11,10 +11,19 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class Server {
+public class Server implements Runnable{
+
+    private boolean keepRunning = true;
+
     public
     static void
     main(String[] arstring) {
+        new Server().run();
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Starting server....");
         try {
             SSLServerSocketFactory sslserversocketfactory =
                     (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
@@ -27,12 +36,17 @@ public class Server {
             BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
 
             String string = null;
-            while ((string = bufferedreader.readLine()) != null) {
+            while ((string = bufferedreader.readLine()) != null || keepRunning) {
                 System.out.println(string);
                 System.out.flush();
             }
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+
+    }
+
+    public void shutdown() {
+        keepRunning=false;
     }
 }
