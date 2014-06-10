@@ -24,4 +24,5 @@ Notes 6/10/2014:
         - More research is needed.
 
 Resources:
+
     *  Nice video explanation of Deffie-Hellman Key Exchange: https://www.youtube.com/watch?v=3QnD2c4Xovk
